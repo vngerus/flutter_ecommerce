@@ -1,16 +1,16 @@
-# flutter_ecommerce_app
+# Ecommerce en Flutter
 
-A new Flutter project.
+### imagen de referencia
 
-## Getting Started
+![Vista de referencia](assets/img/reference.png)
 
-This project is a starting point for a Flutter application.
+### Tareas a implementar para puntos extras:
 
-A few resources to get you started if this is your first Flutter project:
+## Gestión de estados de los productos:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Navegación
+- Añadir
+- Eliminar
+- Control de la cantidad de + a - con el mínimo de 1 en el cart
+- Suma total de los valores
+- Simulación de pago (adicional)
