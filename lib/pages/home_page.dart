@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecommerce_app/pages/bloc/ecommerce_bloc.dart';
 import 'package:flutter_ecommerce_app/widgets/app_colors.dart';
 import 'package:flutter_ecommerce_app/widgets/cateogrias_widget.dart';
 import 'package:flutter_ecommerce_app/widgets/product_widget.dart';
@@ -9,8 +11,19 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    return BlocProvider.value(
+      value: context.read<EcommerceBloc>()..add(LoadProductsEvent()),
+      child: const _Body(),
+    );
+  }
+}
 
+class _Body extends StatelessWidget {
+  const _Body();
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppColor.greyBackground,
       appBar: AppBar(
