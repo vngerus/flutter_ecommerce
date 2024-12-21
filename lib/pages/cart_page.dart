@@ -96,3 +96,8 @@ class CartPage extends StatelessWidget {
     );
   }
 }
+
+
+//TASK: 
+
+//Funcionalidad visual casi completa, pero que se reduzca e incrementen las opciones del cart, tambien que haya un checkout y asi.
