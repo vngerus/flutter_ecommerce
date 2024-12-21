@@ -110,6 +110,12 @@ class _MainPageState extends State<MainPage> {
                 if (state.cart.isEmpty) {
                   return const SizedBox.shrink();
                 }
+
+                final total = state.cart.fold<int>(
+                  0,
+                  (sum, product) => sum + product.quantity,
+                );
+
                 return Positioned(
                   top: -5,
                   right: -5,
@@ -122,7 +128,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                     child: Center(
                       child: Text(
-                        state.cart.length.toString(),
+                        total.toString(),
                         style: TextStyle(
                           color: AppColor.white,
                           fontSize: 9,

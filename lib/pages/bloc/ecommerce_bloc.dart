@@ -36,16 +36,20 @@ class EcommerceBloc extends Bloc<EcommerceEvent, EcommerceState> {
   }
 
   void _onAddToCartEvent(AddToCartEvent event, Emitter<EcommerceState> emit) {
-    final updateCart = state.cart.map((p) {
-      if (p.id == event.product.id) {
-        return p.copyWith(quantity: p.quantity + 1);
-      }
-      return p;
-    }).toList();
+    final existingProductIndex =
+        state.cart.indexWhere((p) => p.id == event.product.id);
 
-    updateCart.add(event.product);
+    final updatedCart = List<ProductModel>.from(state.cart);
 
-    emit(state.copyWith(cart: updateCart));
+    if (existingProductIndex != -1) {
+      final existingProduct = updatedCart[existingProductIndex];
+      updatedCart[existingProductIndex] =
+          existingProduct.copyWith(quantity: existingProduct.quantity + 1);
+    } else {
+      updatedCart.add(event.product.copyWith(quantity: 1));
+    }
+
+    emit(state.copyWith(cart: updatedCart));
   }
 
   void _onUpdateCartQuantityEvent(
