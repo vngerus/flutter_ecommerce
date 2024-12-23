@@ -12,7 +12,7 @@ class CartPage extends StatelessWidget {
         if (state.cart.isEmpty) {
           return const Center(
             child: Text(
-              "Pick something",
+              "Your cart is empty",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
           );
@@ -26,10 +26,13 @@ class CartPage extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<EcommerceBloc>().add(
+                            RemoveCartItemEvent(product: product),
+                          );
+                    },
                     icon: const Icon(Icons.delete, color: Colors.red),
                   ),
                   SizedBox(
@@ -61,7 +64,7 @@ class CartPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          "\$${product.price.toStringAsFixed(2)}",
+                          "\$${(product.price * product.quantity).toStringAsFixed(2)}",
                           style: const TextStyle(
                             fontSize: 14,
                             color: Colors.black,
@@ -73,8 +76,18 @@ class CartPage extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      const Icon(Icons.remove_circle_outline,
-                          color: Colors.grey),
+                      IconButton(
+                        onPressed: () {
+                          context.read<EcommerceBloc>().add(
+                                UpdateCartQuantityEvent(
+                                  product: product,
+                                  isIncrement: false,
+                                ),
+                              );
+                        },
+                        icon: const Icon(Icons.remove_circle_outline,
+                            color: Colors.grey),
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         product.quantity.toString(),
@@ -84,7 +97,18 @@ class CartPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      const Icon(Icons.add_circle_outline, color: Colors.grey),
+                      IconButton(
+                        onPressed: () {
+                          context.read<EcommerceBloc>().add(
+                                UpdateCartQuantityEvent(
+                                  product: product,
+                                  isIncrement: true,
+                                ),
+                              );
+                        },
+                        icon: const Icon(Icons.add_circle_outline,
+                            color: Colors.grey),
+                      ),
                     ],
                   ),
                 ],
@@ -96,8 +120,3 @@ class CartPage extends StatelessWidget {
     );
   }
 }
-
-
-//TASK: 
-
-//Funcionalidad visual casi completa, pero que se reduzca e incrementen las opciones del cart, tambien que haya un checkout y asi.

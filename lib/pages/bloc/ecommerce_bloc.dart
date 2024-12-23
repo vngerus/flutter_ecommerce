@@ -12,6 +12,7 @@ class EcommerceBloc extends Bloc<EcommerceEvent, EcommerceState> {
     on<AddToCartEvent>(_onAddToCartEvent);
     on<UpdateCartQuantityEvent>(_onUpdateCartQuantityEvent);
     on<RemoveCartItemEvent>(_onRemoveCartItemEvent);
+    on<SelectCategoryEvent>(_onSelectCategoryEvent);
   }
 
   void _onLoadProductsEvent(
@@ -26,6 +27,7 @@ class EcommerceBloc extends Bloc<EcommerceEvent, EcommerceState> {
         name: json["description"],
         price: double.parse(json["price"].toString()),
         imageUrl: json["image_url"],
+        category: json["product"],
       );
     }).toList();
 
@@ -36,25 +38,82 @@ class EcommerceBloc extends Bloc<EcommerceEvent, EcommerceState> {
   }
 
   void _onAddToCartEvent(AddToCartEvent event, Emitter<EcommerceState> emit) {
-    final existingProductIndex =
-        state.cart.indexWhere((p) => p.id == event.product.id);
+    final exist = state.cart.firstWhere(
+      (p) => p.id == event.product.id,
+      orElse: () => event.product.copyWith(quantity: 0),
+    );
 
-    final updatedCart = List<ProductModel>.from(state.cart);
+    final updatedCart = state.cart.map((p) {
+      if (p.id == event.product.id) {
+        return p.copyWith(quantity: p.quantity + 1);
+      }
+      return p;
+    }).toList();
 
-    if (existingProductIndex != -1) {
-      final existingProduct = updatedCart[existingProductIndex];
-      updatedCart[existingProductIndex] =
-          existingProduct.copyWith(quantity: existingProduct.quantity + 1);
-    } else {
+    if (exist.quantity == 0) {
       updatedCart.add(event.product.copyWith(quantity: 1));
     }
 
-    emit(state.copyWith(cart: updatedCart));
+    final newTotal = updatedCart.fold<double>(
+      0.0,
+      (sum, product) => sum + (product.price * product.quantity),
+    );
+
+    emit(state.copyWith(cart: updatedCart, totalPrice: newTotal));
   }
 
   void _onUpdateCartQuantityEvent(
-      UpdateCartQuantityEvent event, Emitter<EcommerceState> emit) {}
+      UpdateCartQuantityEvent event, Emitter<EcommerceState> emit) {
+    final updatedCart = state.cart.map((p) {
+      if (p.id == event.product.id) {
+        final newQuantity = event.isIncrement ? p.quantity + 1 : p.quantity - 1;
+        return p.copyWith(quantity: newQuantity > 0 ? newQuantity : 1);
+      }
+      return p;
+    }).toList();
+
+    final newTotal = updatedCart.fold<double>(
+      0.0,
+      (sum, product) => sum + (product.price * product.quantity),
+    );
+
+    emit(state.copyWith(cart: updatedCart, totalPrice: newTotal));
+  }
 
   void _onRemoveCartItemEvent(
-      RemoveCartItemEvent event, Emitter<EcommerceState> emit) {}
+      RemoveCartItemEvent event, Emitter<EcommerceState> emit) {
+    final updatedCart =
+        state.cart.where((p) => p.id != event.product.id).toList();
+
+    final newTotal = updatedCart.fold<double>(
+      0.0,
+      (sum, product) => sum + (product.price * product.quantity),
+    );
+
+    emit(state.copyWith(cart: updatedCart, totalPrice: newTotal));
+  }
+
+  void _onSelectCategoryEvent(
+      SelectCategoryEvent event, Emitter<EcommerceState> emit) {
+    final selectedCategory = event.category;
+
+    final filteredProducts = selectedCategory == null
+        ? productJson
+            .map((json) => ProductModel(
+                  id: json["id"].toString(),
+                  name: json["description"],
+                  price: double.parse(json["price"].toString()),
+                  imageUrl: json["image_url"],
+                  category: json["product"],
+                ))
+            .toList()
+        : state.products
+            .where((product) => product.category == selectedCategory)
+            .toList();
+
+    emit(state.copyWith(
+      selectedCategory: selectedCategory,
+      products: filteredProducts,
+    ));
+  }
 }

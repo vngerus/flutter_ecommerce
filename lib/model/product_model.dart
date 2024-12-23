@@ -5,6 +5,7 @@ class ProductModel extends Equatable {
   final String name;
   final double price;
   final String imageUrl;
+  final String category;
   final int quantity;
 
   const ProductModel({
@@ -12,6 +13,7 @@ class ProductModel extends Equatable {
     required this.name,
     required this.price,
     required this.imageUrl,
+    required this.category,
     this.quantity = 1,
   });
 
@@ -20,6 +22,7 @@ class ProductModel extends Equatable {
     String? name,
     double? price,
     String? imageUrl,
+    String? category,
     int? quantity,
   }) {
     return ProductModel(
@@ -27,16 +30,11 @@ class ProductModel extends Equatable {
       name: name ?? this.name,
       price: price ?? this.price,
       imageUrl: imageUrl ?? this.imageUrl,
+      category: category ?? this.category,
       quantity: quantity ?? this.quantity,
     );
   }
 
   @override
-  List<Object> get props => [
-        id,
-        name,
-        price,
-        imageUrl,
-        quantity,
-      ];
+  List<Object> get props => [id, name, price, imageUrl, category, quantity];
 }

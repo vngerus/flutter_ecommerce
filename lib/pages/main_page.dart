@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/pages/bloc/ecommerce_bloc.dart';
+import 'package:flutter_ecommerce_app/pages/catalog_page.dart';
 import 'package:flutter_ecommerce_app/widgets/app_colors.dart';
 import 'package:flutter_ecommerce_app/pages/cart_page.dart';
 import 'package:flutter_ecommerce_app/pages/home_page.dart';
@@ -17,7 +18,7 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _pages = const [
     HomePage(),
-    Center(child: Text("Catalog coming soon")),
+    CatalogPage(),
     CartPage(),
     Center(child: Text("Favorites coming soon")),
     Center(child: Text("Profile coming soon")),

@@ -4,10 +4,9 @@
 
 ![Vista de referencia](assets/img/reference.png)
 
+### Tareas a implementar para puntos extras:
 
-## Tareas a implementar para puntos extras:
-
-### Gestión de estados de los productos:
+## Gestión de estados de los productos:
 
 - Navegación
 - Añadir
