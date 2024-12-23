@@ -21,15 +21,8 @@ class EcommerceBloc extends Bloc<EcommerceEvent, EcommerceState> {
 
     await Future.delayed(const Duration(milliseconds: 200));
 
-    final products = productJson.map((json) {
-      return ProductModel(
-        id: json["id"].toString(),
-        name: json["description"],
-        price: double.parse(json["price"].toString()),
-        imageUrl: json["image_url"],
-        category: json["product"],
-      );
-    }).toList();
+    final products =
+        productJson.map((json) => ProductModel.fromMap(json)).toList();
 
     emit(state.copyWith(
       homeScreenState: HomeScreenState.success,
@@ -101,14 +94,21 @@ class EcommerceBloc extends Bloc<EcommerceEvent, EcommerceState> {
         ? productJson
             .map((json) => ProductModel(
                   id: json["id"].toString(),
-                  name: json["description"],
-                  price: double.parse(json["price"].toString()),
-                  imageUrl: json["image_url"],
-                  category: json["product"],
+                  name: json["description"] ?? "Unknown",
+                  price: double.tryParse(json["price"].toString()) ?? 0.0,
+                  imageUrl: json["image_url"] ?? "",
+                  category: json["categories"] ?? "Uncategorized",
                 ))
             .toList()
-        : state.products
-            .where((product) => product.category == selectedCategory)
+        : productJson
+            .where((json) => json["categories"] == selectedCategory)
+            .map((json) => ProductModel(
+                  id: json["id"].toString(),
+                  name: json["description"] ?? "Unknown",
+                  price: double.tryParse(json["price"].toString()) ?? 0.0,
+                  imageUrl: json["image_url"] ?? "",
+                  category: json["categories"] ?? "Uncategorized",
+                ))
             .toList();
 
     emit(state.copyWith(

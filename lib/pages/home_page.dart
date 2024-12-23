@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/pages/bloc/ecommerce_bloc.dart';
 import 'package:flutter_ecommerce_app/widgets/app_colors.dart';
-import 'package:flutter_ecommerce_app/widgets/cateogrias_widget.dart';
+import 'package:flutter_ecommerce_app/widgets/categories.widget.dart';
 import 'package:flutter_ecommerce_app/widgets/product_widget.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 

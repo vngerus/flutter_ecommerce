@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce_app/widgets/cateogrias_widget.dart';
+import 'package:flutter_ecommerce_app/widgets/categories.widget.dart';
 
 class CatalogPage extends StatelessWidget {
   const CatalogPage({super.key});

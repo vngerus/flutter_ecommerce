@@ -10,43 +10,37 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-      child: BlocBuilder<EcommerceBloc, EcommerceState>(
-        builder: (context, state) {
-          if (state.homeScreenState == HomeScreenState.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return BlocBuilder<EcommerceBloc, EcommerceState>(
+      buildWhen: (previous, current) =>
+          previous.products != current.products ||
+          previous.selectedCategory != current.selectedCategory,
+      builder: (context, state) {
+        if (state.homeScreenState == HomeScreenState.loading) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          if (state.products.isEmpty) {
-            return const Center(child: Text("No products available"));
-          }
+        if (state.products.isEmpty) {
+          return const Center(child: Text("No products available"));
+        }
 
-          return Column(
-            children: [
-              const SizedBox(height: 16),
-              Expanded(
-                child: GridView.builder(
-                  itemCount: state.products.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: .65,
-                  ),
-                  itemBuilder: (context, index) {
-                    final product = state.products[index];
-                    return _buildCardProduct(
-                      context: context,
-                      product: product,
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+        return GridView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: state.products.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: .75,
+          ),
+          itemBuilder: (context, index) {
+            final product = state.products[index];
+            return _buildCardProduct(
+              context: context,
+              product: product,
+            );
+          },
+        );
+      },
     );
   }
 
@@ -67,7 +61,6 @@ class ProductWidget extends StatelessWidget {
           ),
           child: Image.network(
             product.imageUrl,
-            fit: BoxFit.contain,
             errorBuilder: (context, error, stackTrace) {
               return Icon(
                 Icons.broken_image,
@@ -84,12 +77,10 @@ class ProductWidget extends StatelessWidget {
             color: AppColor.black,
             fontSize: 12,
           ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
         ),
         const SizedBox(height: 7),
         Text(
-          "\$${product.price.toStringAsFixed(2)}",
+          "\$${product.price}",
           style: TextStyle(
             color: AppColor.black,
             fontWeight: FontWeight.w500,

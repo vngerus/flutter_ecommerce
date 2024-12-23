@@ -17,6 +17,16 @@ class ProductModel extends Equatable {
     this.quantity = 1,
   });
 
+  factory ProductModel.fromMap(Map<String, dynamic> map) {
+    return ProductModel(
+      id: map["id"].toString(),
+      name: map["description"] ?? "Unknown",
+      price: double.tryParse(map["price"].toString()) ?? 0.0,
+      imageUrl: map["image_url"] ?? "",
+      category: map["categories"] ?? "Uncategorized",
+    );
+  }
+
   ProductModel copyWith({
     String? id,
     String? name,
