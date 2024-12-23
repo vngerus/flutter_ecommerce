@@ -64,7 +64,7 @@ class CartPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          "\$${(product.price * product.quantity).toStringAsFixed(2)}",
+                          "\$${(product.price * product.quantity).toStringAsFixed(3)}",
                           style: const TextStyle(
                             fontSize: 14,
                             color: Colors.black,

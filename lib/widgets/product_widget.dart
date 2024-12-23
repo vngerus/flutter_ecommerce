@@ -80,7 +80,7 @@ class ProductWidget extends StatelessWidget {
         ),
         const SizedBox(height: 7),
         Text(
-          "\$${product.price}",
+          "\$${product.price.toStringAsFixed(3)}",
           style: TextStyle(
             color: AppColor.black,
             fontWeight: FontWeight.w500,
