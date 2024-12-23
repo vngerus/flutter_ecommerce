@@ -12,14 +12,14 @@ class EcommerceState extends Equatable {
   final List<ProductModel> cart;
   final HomeScreenState homeScreenState;
   final double totalPrice;
-  final String? selectedCategory;
+  final String selectedCategory;
 
   const EcommerceState({
     required this.products,
     required this.cart,
     required this.homeScreenState,
     required this.totalPrice,
-    this.selectedCategory,
+    required this.selectedCategory,
   });
 
   factory EcommerceState.initial() {
@@ -28,7 +28,7 @@ class EcommerceState extends Equatable {
       cart: [],
       homeScreenState: HomeScreenState.none,
       totalPrice: 0.0,
-      selectedCategory: null,
+      selectedCategory: "all",
     );
   }
 

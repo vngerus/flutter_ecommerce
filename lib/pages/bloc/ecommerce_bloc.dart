@@ -90,25 +90,11 @@ class EcommerceBloc extends Bloc<EcommerceEvent, EcommerceState> {
       SelectCategoryEvent event, Emitter<EcommerceState> emit) {
     final selectedCategory = event.category;
 
-    final filteredProducts = selectedCategory == null
-        ? productJson
-            .map((json) => ProductModel(
-                  id: json["id"].toString(),
-                  name: json["description"] ?? "Unknown",
-                  price: double.tryParse(json["price"].toString()) ?? 0.0,
-                  imageUrl: json["image_url"] ?? "",
-                  category: json["categories"] ?? "Uncategorized",
-                ))
-            .toList()
+    final filteredProducts = (selectedCategory == "all")
+        ? productJson.map(ProductModel.fromMap).toList()
         : productJson
             .where((json) => json["categories"] == selectedCategory)
-            .map((json) => ProductModel(
-                  id: json["id"].toString(),
-                  name: json["description"] ?? "Unknown",
-                  price: double.tryParse(json["price"].toString()) ?? 0.0,
-                  imageUrl: json["image_url"] ?? "",
-                  category: json["categories"] ?? "Uncategorized",
-                ))
+            .map(ProductModel.fromMap)
             .toList();
 
     emit(state.copyWith(

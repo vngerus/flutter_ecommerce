@@ -9,7 +9,7 @@ class CategoriesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final categories = [
-      {"name": null, "icon": Icons.all_inclusive, "label": "All"},
+      {"name": "all", "icon": Icons.all_inclusive, "label": "All"},
       {"name": "Phones", "icon": Icons.phone_iphone, "label": "Phones"},
       {"name": "Consoles", "icon": Icons.videogame_asset, "label": "Consoles"},
       {"name": "Laptops", "icon": Icons.laptop, "label": "Laptops"},
